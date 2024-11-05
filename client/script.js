@@ -93,7 +93,7 @@ const handleSubmit = async (e) => {
     // Loader while waiting for bot's response
     loader(messageDiv);
 
-    const response = await fetch('http://localhost:5000/generate', { // Updated endpoint
+    const response = await fetch('https://sajilo-ai.onrender.com', { // Updated endpoint
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
