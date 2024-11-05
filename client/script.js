@@ -57,31 +57,43 @@ function chatStripe(isAi, value, uniqueId) {
     );
 }
 
+// Function to send an initial greeting message
+const sendInitialGreeting = () => {
+    const uniqueId = generateUniqueId();
+    chatContainer.innerHTML += chatStripe(true, 'What can I help with?', uniqueId);
+
+    // Scroll to the bottom
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+};
+
+// Call the initial greeting function when the page loads
+sendInitialGreeting();
+
 const handleSubmit = async (e) => {
     e.preventDefault();
 
     const data = new FormData(form);
 
-    // user's chatstripe
+    // User's chatstripe
     chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
 
-    // clear the textarea input
+    // Clear the textarea input
     form.reset();
 
-    // bot's chatstripe
+    // Bot's chatstripe
     const uniqueId = generateUniqueId();
     chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
 
-    // scroll to the bottom 
+    // Scroll to the bottom
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
-    // specific message div 
+    // Specific message div
     const messageDiv = document.getElementById(uniqueId);
 
-    // loader while waiting for bot's response
+    // Loader while waiting for bot's response
     loader(messageDiv);
 
-    const response = await fetch('http://localhost:5000', {
+    const response = await fetch('http://localhost:5000/generate', { // Updated endpoint
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
