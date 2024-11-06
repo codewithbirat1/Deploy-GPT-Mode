@@ -13,31 +13,25 @@ body {
   width: 100vw;
   height: 100vh;
   background: #343541;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  overflow: hidden;
 }
 
 #chat_container {
   flex: 1;
   width: 80%;
-  height: 100%;
-  overflow-y: scroll;
-margin-top: 1em;
+  padding-top: 1em;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
   padding-bottom: 20px;
-  scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
-/* hides scrollbar */
 #chat_container::-webkit-scrollbar {
   display: none;
 }
@@ -55,9 +49,7 @@ margin-top: 1em;
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-
   display: flex;
-  flex-direction: row;
   align-items: flex-start;
   gap: 10px;
 }
@@ -66,9 +58,7 @@ margin-top: 1em;
   width: 36px;
   height: 36px;
   border-radius: 5px;
-
   background: #5436DA;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -86,20 +76,13 @@ margin-top: 1em;
 
 .message {
   flex: 1;
-
   color: #dcdcdc;
   font-size: 20px;
-
-  max-width: 100%;
-  overflow-x: scroll;
-
+  overflow-x: auto;
   white-space: pre-wrap;
-
-  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-/* hides scrollbar */
 .message::-webkit-scrollbar {
   display: none;
 }
@@ -110,18 +93,14 @@ form {
   margin: 0 auto;
   padding: 10px;
   background: #40414F;
-
   display: flex;
-  flex-direction: row;
   gap: 10px;
 }
 
 textarea {
   width: 100%;
-
   color: #fff;
   font-size: 18px;
-
   padding: 10px;
   background: transparent;
   border-radius: 5px;
@@ -130,10 +109,14 @@ textarea {
 }
 
 button {
-  outline: 0;
-  border: 0;
-  cursor: pointer;
   background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.1);
 }
 
 form img {
@@ -141,88 +124,11 @@ form img {
   height: 30px;
 }
 
-/* New styles for greeting message */
 .greeting-message {
   text-align: center;
-  font-size: 48px; /* Adjust size as needed */
-  background: linear-gradient(90deg, #ff7e5f, #feb47b); /* Gradient colors */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-top: 20px; /* Add space above the message */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.greeting-message .emoji {
-  font-size: 64px; /* Adjust emoji size as needed */
-  margin-left: 10px; /* Space between text and emoji */
-}#info-container {
-  width: 100%;
-  height: auto;
-  max-width: 800px;
-  margin: 20px auto;
-  background: #40414F;
-  color: #dcdcdc;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #ff7e5f;
+  font-size: 2rem;
   background: linear-gradient(90deg, #ff7e5f, #feb47b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-h2 {
-  font-size: 2rem;
-  margin: 20px 0 10px;
-  color: #10a37f;
-}
-
-p {
-  font-size: 1.5rem;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-ul li{
-  font-size: 1.2rem;
-  line-height: 1.2;
-  margin-bottom: 15px;
-}
-
-#description-button {
   margin-top: 20px;
-  padding: 12px 20px;
-  background-color: #10a37f;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: background-color 0.3s;
-}
-
-#description-button:hover {
-  background-color: #0e7e63;
-}
-
-.footer {
-  text-align: center;
-  margin-top: 30px;
-  font-size: 1.2rem;
-}
-
-.footer a {
-  color: #10a37f;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
 }

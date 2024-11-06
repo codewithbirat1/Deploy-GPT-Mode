@@ -1,17 +1,15 @@
 import bot from './assets/bot.svg';
 import user from './assets/user.svg';
 
-const form = document.querySelector('form');
+const form = document.querySelector('#form');
 const chatContainer = document.querySelector('#chat_container');
 
 let loadInterval;
 
 function loader(element) {
     element.textContent = '';
-
     loadInterval = setInterval(() => {
         element.textContent += '.';
-
         if (element.textContent === '....') {
             element.textContent = '';
         }
@@ -20,8 +18,7 @@ function loader(element) {
 
 function typeText(element, text) {
     let index = 0;
-
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
         if (index < text.length) {
             element.innerHTML += text.charAt(index);
             index++;
@@ -34,93 +31,75 @@ function typeText(element, text) {
 function generateUniqueId() {
     const timestamp = Date.now();
     const randomNumber = Math.random();
-    const hexadecimalString = randomNumber.toString(16);
-
-    return `id-${timestamp}-${hexadecimalString}`;
+    const hexString = randomNumber.toString(16).substring(2);
+    return `id-${timestamp}-${hexString}`;
 }
 
 function chatStripe(isAi, value, uniqueId) {
-    return (
-        `
-        <div class='wrapper ${isAi && 'ai'}'>
+    return `
+        <div class='wrapper ${isAi ? 'ai' : ''}'>
             <div class='chat'>
                 <div class='profile'>
-                    <img 
-                      src='${isAi ? bot : user}' 
-                      alt='${isAi ? 'bot' : 'user'}' 
-                    />
+                    <img src='${isAi ? bot : user}' alt='${isAi ? 'bot' : 'user'}' />
                 </div>
                 <div class='message' id='${uniqueId}'>${value}</div>
             </div>
-        </div>
-        `
-    );
+        </div>`;
 }
 
-// Function to send an initial greeting message
 const sendInitialGreeting = () => {
     const uniqueId = generateUniqueId();
     chatContainer.innerHTML += chatStripe(true, 'What can I help with?', uniqueId);
-
-    // Scroll to the bottom
     chatContainer.scrollTop = chatContainer.scrollHeight;
 };
 
-// Call the initial greeting function when the page loads
 sendInitialGreeting();
 
-const handleSubmit = async (e) => {
+async function handleSubmit(e) {
     e.preventDefault();
 
     const data = new FormData(form);
+    const userMessage = data.get('prompt').trim();
 
-    // User's chatstripe
-    chatContainer.innerHTML += chatStripe(false, data.get('prompt'));
+    if (!userMessage) return;
 
-    // Clear the textarea input
+    chatContainer.innerHTML += chatStripe(false, userMessage);
+
     form.reset();
 
-    // Bot's chatstripe
     const uniqueId = generateUniqueId();
     chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
-
-    // Scroll to the bottom
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
-    // Specific message div
     const messageDiv = document.getElementById(uniqueId);
-
-    // Loader while waiting for bot's response
     loader(messageDiv);
 
-    const response = await fetch('https://sajilo-ai.onrender.com/generate', { // Updated endpoint
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            prompt: data.get('prompt')
-        })
-    });
+    try {
+        const response = await fetch('https://sajilo-ai.onrender.com/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: userMessage })
+        });
 
-    clearInterval(loadInterval);
-    messageDiv.innerHTML = ' ';
+        clearInterval(loadInterval);
+        messageDiv.textContent = '';
 
-    if (response.ok) {
-        const responseData = await response.json();
-        const parsedData = responseData.bot.trim();
-
-        typeText(messageDiv, parsedData);
-    } else {
-        const err = await response.text();
-        messageDiv.innerHTML = 'Something went wrong';
-        alert(err);
+        if (response.ok) {
+            const responseData = await response.json();
+            const parsedData = responseData.bot.trim();
+            typeText(messageDiv, parsedData);
+        } else {
+            messageDiv.textContent = 'Something went wrong. Please try again.';
+        }
+    } catch (error) {
+        clearInterval(loadInterval);
+        messageDiv.textContent = 'Network error. Check your connection.';
     }
-};
+
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+}
 
 form.addEventListener('submit', handleSubmit);
 form.addEventListener('keyup', (e) => {
-    if (e.keyCode === 13) {
-        handleSubmit(e);
-    }
+    if (e.key === 'Enter' && !e.shiftKey) handleSubmit(e);
 });
