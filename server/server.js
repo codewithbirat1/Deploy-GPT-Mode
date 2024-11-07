@@ -89,7 +89,7 @@ app.post('/generate', async (req, res) => {
             return res.status(200).send({
                 bot: `This AI was developed by Nexolinx, a leading IT solution company based in Lumbini, Nepal. Nexolinks specializes in state-of-the-art web development, design, and digital technology services and leverages innovation into transforming ideas into efficient and modern applications. With a strong commitment to excellence, Nexolinx enables its clients to facilitate user-centric solutions that translate into meaningful advancements of technology. Additionally, This AI has also been trained on state-of-the-art, advanced machine learning frameworks provided by Google.
                
-                  **Learn more about Nexolinx**: <a href="http://www.nexolinx.com" target="_blank">www.nexolinx.com</a>`
+                  **Learn more about Nexolinx**: www.nexolinx.com`
                 
             });
         }
