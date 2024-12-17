@@ -14,7 +14,7 @@ function loader(element) {
         if (element.textContent === '....') {
             element.textContent = '';
         }
-    }, 300);
+    }, 50);
 }
 
 // Function to type text character by character
@@ -27,7 +27,7 @@ function typeText(element, text) {
         } else {
             clearInterval(interval);
         }
-    }, 20);
+    }, 300);
 }
 
 // Function to generate a unique ID for each chat message
