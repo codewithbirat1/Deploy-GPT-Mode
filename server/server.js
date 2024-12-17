@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Root route
-app.get('/', (req, res) => res.status(200).send({ message: 'Hello from GyanAI!' }));
+app.get('/', (req, res) => res.status(200).send({ message: 'Hello from GyanAI!!' }));
 
 // Handle Gemini requests with creator information check
 app.post('/generate', async (req, res) => {
