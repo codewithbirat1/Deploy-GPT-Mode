@@ -6,6 +6,7 @@ const chatContainer = document.querySelector('#chat_container');
 
 let loadInterval;
 
+// Loader function to show "..." while waiting for a response
 function loader(element) {
     element.textContent = '';
     loadInterval = setInterval(() => {
@@ -16,6 +17,7 @@ function loader(element) {
     }, 300);
 }
 
+// Function to type text character by character
 function typeText(element, text) {
     let index = 0;
     const interval = setInterval(() => {
@@ -28,6 +30,7 @@ function typeText(element, text) {
     }, 20);
 }
 
+// Function to generate a unique ID for each chat message
 function generateUniqueId() {
     const timestamp = Date.now();
     const randomNumber = Math.random();
@@ -35,6 +38,7 @@ function generateUniqueId() {
     return `id-${timestamp}-${hexString}`;
 }
 
+// Function to generate the chat stripe HTML for both AI and User
 function chatStripe(isAi, value, uniqueId) {
     return `
         <div class='wrapper ${isAi ? 'ai' : ''}'>
@@ -47,6 +51,7 @@ function chatStripe(isAi, value, uniqueId) {
         </div>`;
 }
 
+// Function to send an initial greeting when the page loads
 const sendInitialGreeting = () => {
     const uniqueId = generateUniqueId();
     chatContainer.innerHTML += chatStripe(true, 'What can I help with?', uniqueId);
@@ -55,6 +60,7 @@ const sendInitialGreeting = () => {
 
 sendInitialGreeting();
 
+// Function to handle form submission and send messages to the server
 async function handleSubmit(e) {
     e.preventDefault();
 
@@ -63,10 +69,12 @@ async function handleSubmit(e) {
 
     if (!userMessage) return;
 
+    // Display user message in the chat container
     chatContainer.innerHTML += chatStripe(false, userMessage);
 
     form.reset();
 
+    // Create a new unique ID for the bot's response and display an empty message
     const uniqueId = generateUniqueId();
     chatContainer.innerHTML += chatStripe(true, ' ', uniqueId);
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -74,8 +82,14 @@ async function handleSubmit(e) {
     const messageDiv = document.getElementById(uniqueId);
     loader(messageDiv);
 
+    // Determine the appropriate API URL for the environment (local or production)
+    const apiUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://sajilo-ai.onrender.com/generate'  // Production URL
+        : 'http://localhost:5000/generate';         // Local URL for development
+
     try {
-        const response = await fetch('https://sajilo-ai.onrender.com/generate', {
+        // Fetch the bot's response from the server
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ prompt: userMessage }),
@@ -100,7 +114,10 @@ async function handleSubmit(e) {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
+// Event listener to handle form submission
 form.addEventListener('submit', handleSubmit);
+
+// Event listener to handle pressing Enter to submit the form
 form.addEventListener('keyup', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) handleSubmit(e);
 });

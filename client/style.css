@@ -6,8 +6,8 @@
 }
 
 :root {
-  --primary-blue: #1e88e5;
-  --primary-pink: #e91e63;
+  --primary-blue: #005fb3;
+  --primary-pink: #e91e1e;
   --primary-yellow: #ffc107;
   --bg-dark: #343541;
   --bg-light: #40414F;
@@ -38,8 +38,8 @@ body {
   right: 0;
   height: 200px;
   background: linear-gradient(180deg, 
-    rgba(30, 136, 229, 0.1),
-    rgba(233, 30, 99, 0.1),
+    rgba(11, 89, 158, 0.1),
+    rgba(10, 63, 198, 0.1),
     transparent
   );
   pointer-events: none;
