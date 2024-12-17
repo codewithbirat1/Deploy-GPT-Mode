@@ -75,7 +75,7 @@ async function handleSubmit(e) {
     loader(messageDiv);
 
     try {
-        const response = await fetch('http://localhost:5000/generate', {
+        const response = await fetch('https://sajilo-ai.onrender.com/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ prompt: userMessage })
