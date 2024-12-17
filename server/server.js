@@ -19,12 +19,13 @@ app.post('/generate', async (req, res) => {
         if (!prompt) return res.status(400).send({ error: 'Prompt is required' });
 
         // Detect if prompt is asking about creators using regex
-        const creatorRegex = /\b(who (made|created|developed|built|invented|designed|programmed|coded|wrote) you|your (creator|developer|team|architect))\b/i;
+        const creatorRegex = /\b(who (made|created|developed|built|invented|designed|programmed|coded|wrote|engineered|crafted|assembled|conceived) you|your (creator|developer|team|architect|designer|engineer|author|inventor|develop))\b/i;
+
         const isCreatorQuestion = creatorRegex.test(prompt);
 
         if (isCreatorQuestion) {
             return res.status(200).send({
-                bot: `This AI was developed by Nexolinx for educational purpose in GyamJyoti, a leading IT solution company based in Lumbini, Nepal. Nexolinx specializes in state-of-the-art web development, design, and digital technology services. With a strong commitment to excellence, Nexolinx creates user-centric solutions for modern applications. 
+                bot: `This AI was developed by Nexolinx for educational purpose for GyanJyoti, a leading IT solution company based in Lumbini, Nepal. Nexolinx specializes in state-of-the-art web development, design, and digital technology services. With a strong commitment to excellence, Nexolinx creates user-centric solutions for modern applications. 
 
 Learn more about Nexolinx: [www.nexolinx.com](http://www.nexolinx.com)`
             });
