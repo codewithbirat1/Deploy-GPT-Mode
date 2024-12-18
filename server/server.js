@@ -25,9 +25,7 @@ app.post('/generate', async (req, res) => {
 
         if (isCreatorQuestion) {
             return res.status(200).send({
-                bot: `This AI was developed by Nexolinx for educational purposes for GyanJyoti, a leading IT solution company based in Lumbini, Nepal. Nexolinx specializes in state-of-the-art web development, design, and digital technology services. With a strong commitment to excellence, Nexolinx creates user-centric solutions for modern applications.
-
-Learn more about Nexolinx: [www.nexolinx.com](http://www.nexolinx.com)`
+                bot: `This AI was developed by Nexolinx for educational purposes for GyanJyoti, a leading IT solution company based in Lumbini, Nepal. Nexolinx specializes in state-of-the-art web development, design, and digital technology services. With a strong commitment to excellence, Nexolinx creates user-centric solutions for modern applications.`
             });
         }
 
@@ -35,17 +33,12 @@ Learn more about Nexolinx: [www.nexolinx.com](http://www.nexolinx.com)`
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) throw new Error('GEMINI_API_KEY is not set in the environment variables');
 
-        // Limit API request to minimal text
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [
-                    {
-                        parts: [{ text: prompt }]
-                    }
-                ]
-            })
+                contents: [{ parts: [{ text: prompt }] }]
+            }),
         });
 
         if (!response.ok) {
@@ -55,9 +48,6 @@ Learn more about Nexolinx: [www.nexolinx.com](http://www.nexolinx.com)`
 
         const data = await response.json();
         const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response available';
-
-        // Cache the response for frequent prompts (if needed)
-        // (This is optional based on your app's use case.)
 
         res.status(200).send({ bot: reply });
     } catch (error) {

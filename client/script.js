@@ -14,20 +14,20 @@ function loader(element) {
         if (element.textContent === '....') {
             element.textContent = '';
         }
-    }, 50);
+    }, 400);
 }
 
-// Function to type text character by character
+// Function to type text character by character with faster typing
 function typeText(element, text) {
     let index = 0;
-    const interval = setInterval(() => {
+    function typeChar() {
         if (index < text.length) {
             element.innerHTML += text.charAt(index);
             index++;
-        } else {
-            clearInterval(interval);
+            setTimeout(typeChar, 30); // Reduced delay for faster typing
         }
-    }, 300);
+    }
+    typeChar();
 }
 
 // Function to generate a unique ID for each chat message
@@ -83,7 +83,7 @@ async function handleSubmit(e) {
     loader(messageDiv);
 
     // Determine the appropriate API URL for the environment (local or production)
-    const apiUrl = process.env.NODE_ENV === 'production' 
+    const apiUrl = process.env.NODE_ENV === 'production'
         ? 'https://sajilo-ai.onrender.com/generate'  // Production URL
         : 'http://localhost:5000/generate';         // Local URL for development
 
